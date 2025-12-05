@@ -30,10 +30,11 @@ class Node:
 
 
 class LogParser:
-    def __init__(self, 
-                 depth=4, st=0.5, 
+    def __init__(self,
+                 depth=4, st=0.5,
                  maxChild=100, rex=[], keep_para=False):
-        self.total_time = 0.0
+        self.
+         = 0.0
         self.depth = depth - 2
         self.st = st
         self.maxChild = maxChild
@@ -113,7 +114,7 @@ class LogParser:
                             parentn = newNode
                         else:
                             parentn = parentn.childD['<*>']
-            
+
                 else:
                     if '<*>' not in parentn.childD:
                         newNode = Node(depth=currentDepth+1, digitOrtoken='<*>')
@@ -137,7 +138,7 @@ class LogParser:
                 numOfPar += 1
                 continue
             if token1 == token2:
-                simTokens += 1 
+                simTokens += 1
 
         retVal = float(simTokens) / len(seq1)
 
@@ -159,7 +160,7 @@ class LogParser:
                 maxClust = logClust
 
         if maxSim >= self.st:
-            retLogClust = maxClust  
+            retLogClust = maxClust
 
         return retLogClust
 
@@ -195,7 +196,7 @@ class LogParser:
         self.df_log['EventId'] = log_templateids
         self.df_log['EventTemplate'] = log_templates
         if self.keep_para:
-            self.df_log["ParameterList"] = self.df_log.apply(self.get_parameter_list, axis=1) 
+            self.df_log["ParameterList"] = self.df_log.apply(self.get_parameter_list, axis=1)
         array_result = self.df_log.loc[:, ['Content', 'EventId', 'EventTemplate']].values
         list_result = [list(row) for row in array_result]
         return list_result
@@ -220,7 +221,7 @@ class LogParser:
             else:
                 newTemplate = self.getTemplate(logmessageL, matchCluster.logTemplate)
                 matchCluster.logIDL.append(logID)
-                if ' '.join(newTemplate) != ' '.join(matchCluster.logTemplate): 
+                if ' '.join(newTemplate) != ' '.join(matchCluster.logTemplate):
                     matchCluster.logTemplate = newTemplate
 
 
@@ -228,7 +229,7 @@ class LogParser:
         time_taken = datetime.now() - start_time
         self.total_time += time_taken.total_seconds()
         return list_result
-    
+
     def print_time(self):
         print("[Drain grouping time taken: {!s}]".format(self.total_time), flush=True)
 
@@ -243,7 +244,7 @@ class LogParser:
         self.df_log = pd.DataFrame(logs, columns=['Content'])
         self.df_log.insert(0, "LineId", None)
         self.df_log["LineId"] = [i + 1 for i in range(linecount)]
-        self.df_log["Content_"] = self.df_log["Content"].map(preprocess)   
+        self.df_log["Content_"] = self.df_log["Content"].map(preprocess)
 
     def preprocess(self, line):
         for currentRex in self.rex:
